@@ -47,6 +47,9 @@ services:
       - /var/lib/marzban-node:/var/lib/marzban-node
 EOL
 
+# pull marzban docker image
+docker pull gozargah/marzban-node:latest
+
 marzban_cert_file="/var/lib/marzban-node/ssl_client_cert.pem"
 touch /var/lib/marzban-node/ssl_client_cert.pem
 echo Created file ${marzban_cert_file}
