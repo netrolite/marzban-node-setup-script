@@ -26,6 +26,11 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 sudo usermod -aG docker $USER
 newgrp docker
 
+# pull marzban docker image
+docker pull gozargah/marzban-node:latest
+
+apt install neovim -y
+
 # install marzban-node
 cd
 git clone https://github.com/Gozargah/Marzban-node ${marzban_dir}
@@ -47,8 +52,6 @@ services:
       - /var/lib/marzban-node:/var/lib/marzban-node
 EOL
 
-# pull marzban docker image
-docker pull gozargah/marzban-node:latest
 
 marzban_cert_file="/var/lib/marzban-node/ssl_client_cert.pem"
 touch /var/lib/marzban-node/ssl_client_cert.pem
