@@ -1,8 +1,16 @@
 #!/bin/bash
 
-marzban_dir="~/marzban-node"
+# Check if a username argument is provided
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <username>"
+  exit 1
+fi
+
+username=$1
+
+marzban_dir="/home/${username}/marzban-node"
 marzban_cert_file="/var/lib/marzban-node/ssl_client_cert.pem"
-node_exporter_dir="~/node-exporter"
+node_exporter_dir="/home/${username}/node-exporter"
 node_exporter_port=55000
 
 apt update -y
@@ -39,7 +47,7 @@ mkdir -p /var/lib/marzban-node
 touch ${marzban_cert_file}
 echo Created file ${marzban_cert_file}
 
-mkdir ${marzban_dir}
+mkdir -p ${marzban_dir}
 cd ${marzban_dir}
 
 cat > docker-compose.yml <<EOL
@@ -51,7 +59,7 @@ services:
     network_mode: host
 
     environment:
-      SSL_CLIENT_CERT_FILE: "/var/lib/marzban-node/ssl_client_cert.pem"
+      SSL_CLIENT_CERT_FILE: "${marzban_cert_file}"
 
     volumes:
       - /var/lib/marzban-node:/var/lib/marzban-node
@@ -60,7 +68,7 @@ EOL
 docker pull gozargah/marzban-node:latest
 
 # install node exporter for prometheus monitoring
-mkdir ${node_exporter_dir}
+mkdir -p ${node_exporter_dir}
 cd ${node_exporter_dir}
 
 cat > docker-compose.yml <<EOL
@@ -83,6 +91,6 @@ EOL
 # start node exporter
 docker compose up -d
 
-echo Copy the certificate from the Marzban panel and paste it in ${marzban_cert_file}
-echo Then, run "docker compose up -d" from the directory ${marzban_dir}
+echo "Copy the certificate from the Marzban panel and paste it in ${marzban_cert_file}"
+echo "Then, run 'docker compose up -d' from the directory ${marzban_dir}"
 
