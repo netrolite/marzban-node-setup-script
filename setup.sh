@@ -17,6 +17,9 @@ apt update -y
 apt upgrade -y
 apt install curl socat git -y
 
+# uninstall packages conflicting with docker
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
 # install docker
 # Add Docker's official GPG key:
 apt install ca-certificates curl
