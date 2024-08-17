@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# Check if a username argument is provided
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <username>"
-  exit 1
-fi
-
-username=$1
+# Prompt the user for the username
+read -p "Please enter the user for which to install marzban and other things: " username
 
 marzban_dir="/home/${username}/marzban-node"
 marzban_cert_file="/var/lib/marzban-node/ssl_client_cert.pem"
